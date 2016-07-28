@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
     name='regsnp_intron',
-    version='0.1.0',
+    version='0.1.1',
     packages=['regsnp_intron', 'regsnp_intron.rbp', 'regsnp_intron.utils', 'regsnp_intron.predictor',
               'regsnp_intron.junc_score', 'regsnp_intron.conservation', 'regsnp_intron.protein_feature'],
     scripts=['bin/regsnp_intron'],
