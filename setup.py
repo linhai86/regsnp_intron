@@ -13,6 +13,7 @@ setup(
                       'pysam',
                       'bx-python',
                       'pybedtools'],
+    include_package_data=True,
     url='https://github.com/linhai86/regsnp_intron',
     license='MIT',
     author='linhai',
