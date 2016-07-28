@@ -2,17 +2,17 @@
 regsnp-intron predicts the disease-causing probability of intronic single nucleotide variants (iSNVs) based on both genomic and protein structural features.
 
 ##Prerequisites
-*ANNOVAR (>= 2016Feb01)*
+**ANNOVAR (>= 2016Feb01):**
 Follow the instructions at <http://annovar.openbioinformatics.org/en/latest> to install, and prepare Ensembl gene annotation.
 ```bash
 tar -xf annovar.latest.tar.gz
 cd annovar
 perl annotate_variation.pl -downdb -buildver hg19 -webfrom annovar ensGene humandb/
 ```
-*BEDTools (>= 2.25.0)*
+**BEDTools (>= 2.25.0):**
 Follow the instructions at <http://bedtools.readthedocs.io/en/latest> install, and make sure the programs are in your PATH.
 
-*Python (>= 2.7.11)*
+**Python (>= 2.7.11):**
 Installing libraries such as Numpy and Scipy can be a little difficult for inexperienced users. We highly recommend installing [Anaconda](https://docs.continuum.io/anaconda). Anaconda conveniently installs Python and other commonly used packages for scientific computing and data science. (Python 3 is not currently supported.)
 
 The following Python libraries are also required. They will be automatically installed if you use pip (see [Installation](#Installation)).
@@ -71,6 +71,28 @@ optional arguments:
                         locate at: regsnp_intron/settings/settings.json
   -f, --force           overwrite existing directory
 
+```
+
+##Output
+The following files will be generated under the output directory:
+
+* snp.prediction.txt: tab-delimited text file containing prediction results and all the features for iSNVs.
+* snp.features.txt: tab-delimited text file containing all the features for iSNVs (can be deleted).
+* tmp: temporary folder containing all the intermediate results (can be deleted).
+
+snp.prediction.txt contains the following columns:
+```
+chrom: Chromosome
+pos: Position.
+ref: Reference allele.
+alt: Alternative allele.
+disease: Categorical prediction.
+prob: Disease-causing probability [0, 1]. Higher score indicates higher probability of being pathologic.
+splicing_site: Indicates on/off splicing site. Splicing sites are defined as +7bp from donor site and -13bp from acceptor site.
+features: The rest of columns contain all the genomic and protein structural features around each iSNV.
+. 
+.
+.
 ```
 
 ##Citation
