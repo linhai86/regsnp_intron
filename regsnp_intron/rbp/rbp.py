@@ -5,9 +5,9 @@ import numpy as np
 
 
 class RBP(object):
-    '''
+    """
     Store PSSM of single RBP. Given a sequence, calculate the max matching score.
-    '''
+    """
     def __init__(self, pssm_fname):
         self.name = os.path.basename(pssm_fname)  # pssm file name
         self.pssm = self.parse_pssm(pssm_fname)   # pssm numpy ndarray. A 4 x m matrix where m is the motif length.
@@ -15,25 +15,21 @@ class RBP(object):
         self.len = self.pssm.shape[1]  # motif length
 
     def parse_pssm(self, fname):
-        '''
+        """
         parse PSSM matrix file
         :param fname: a file contains a 4 x m PSSM matrix. Each row corresponds to A,C,G,T, and m is the motif length.
         :return: a 4 x m numpy ndarray.
-        '''
-        '''
-        :param fname:
-        :return:
-        '''
+        """
         matrix = np.genfromtxt(fname)
         return matrix
 
     def match(self, seq, cover_center=True):
-        '''
+        """
         calculate the max matching score.
         :param seq: input DNA sequence. Should be the same strand as RNA. The length should be longer than RBP motif.
         :param cover_center: indicate the motif must cover the center of sequence.
         :return: the max matching score.
-        '''
+        """
         seq = seq.upper()
         seq_len = len(seq)
 
@@ -56,12 +52,12 @@ class RBP(object):
         return max_score
 
     def _match(self, seq, pssm=None):
-        '''
+        """
         calculate the matching score.
         :param seq: input DNA sequence. Should be the same strand as RNA. The length should be equal to RBP motif.
         :param pssm: a 4 x m numpy ndarray represents PSSM. Each row corresponds to A,C,G,T.
         :return: the matching score
-        '''
+        """
         seq_len = len(seq)
         assert seq_len == self.len, 'sequence length {0} should equal to motif length {1}.'.format(seq_len, self.len)
         letters = {'A':0, 'C':1, 'G':2, 'T':3}  # the row index of each letter in PSSM.

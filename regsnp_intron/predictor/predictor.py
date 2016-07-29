@@ -16,10 +16,11 @@ class Predictor(object):
         self.logger = logging.getLogger(__name__)
 
     def predict(self, ifname, ofname):
-        '''
+        """
         Predict diseasing-causing probability of all intronic SNVs
-        :data: m x n pandas data frame. m is the number of SNVs, n is the number of features.
-        '''
+        :param ifname: m x n input file. m is the number of SNVs, n is the number of features.
+        :param ofname: output file.
+        """
         self.logger.info('Loading all the features.')
         data = pd.read_csv(ifname, sep='\t', header=0)
         data_on_ss = data[(data['distance'] >= -13) & (data['distance'] <= 7) & (data['distance'] != 0)]
@@ -50,10 +51,10 @@ class Predictor(object):
             to_csv(ofname, sep='\t', na_rep='NA', index=False)
 
     def _predict_on_ss(self, data):
-        '''
+        """
         Predict diseasing-causing probability of on-splicing-site SNVs
-        :data: m x n pandas data frame. m is the number of SNVs, n is the number of features.
-        '''
+        :param data: m x n pandas data frame. m is the number of SNVs, n is the number of features.
+        """
         data = data.drop(['#chrom', 'pos', 'ref', 'alt', 'name', 'strand', 'distance'], axis=1)
         data = self.on_ss_imp.transform(data)
         preds = self.on_ss_clf.predict(data)
@@ -61,10 +62,10 @@ class Predictor(object):
         return preds, scores
 
     def _predict_off_ss(self, data):
-        '''
+        """
         Predict diseasing-causing probability of off-splicing-site SNVs
-        :data: m x n pandas data frame. m is the number of SNVs, n is the number of features.
-        '''
+        :param data: m x n pandas data frame. m is the number of SNVs, n is the number of features.
+        """
         data = data.drop(['#chrom', 'pos', 'ref', 'alt', 'name', 'strand', 'distance', 'aic_change', 'dic_change'],
                          axis=1)
         data = self.off_ss_imp.transform(data)

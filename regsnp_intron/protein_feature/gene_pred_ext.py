@@ -44,11 +44,12 @@ class GenePredExt(object):
         return transcripts
 
     def get_protein_coord(self, transcript_id, gstart, gend):
-        '''
-        :gstart: genomic start of exon, 0-based
-        :gend: genomic end of exon, 1-based
-        :return: start and end of protein coordinates
-        '''
+        """
+        :param transcript_id: transcript id.
+        :param gstart: genomic start of exon, 0-based.
+        :param gend: genomic end of exon, 1-based.
+        :return: start and end of protein coordinates.
+        """
         pstart = None
         pend = None
         if transcript_id in self.transcripts:
