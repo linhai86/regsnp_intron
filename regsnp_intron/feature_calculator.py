@@ -29,35 +29,44 @@ class FeatureCalculator(object):
         out_dir_tmp = os.path.join(self.out_dir, 'tmp')
         os.mkdir(out_dir_tmp)
 
-        # sort input
-        self.logger.info('Sorting input file.')
+        # Check input format
+        self.logger.info('Checking input file format.')
         snp = SNP(self.ifname)
+        ref_name = os.path.join(self.db_dir, 'hg19/hg19.fa')
+        if not snp.is_valid(ref_name):
+            raise RuntimeError('Invalid input file format.')
+
+        # Sort input
+        self.logger.info('Sorting input file.')
         snp.sort(os.path.join(out_dir_tmp, 'snp.sorted'))
 
-        # annotate SNVs
+        # Annotate SNVs
         self.logger.info('Annotating SNVs with ANNOVAR.')
         annovar_path = os.path.expanduser(self.settings['annovar_path'])
         annovar_db_path = os.path.expanduser(self.settings['annovar_db_path'])
         annovar = Annovar(annovar_path, annovar_db_path)
         annovar.annotate(os.path.join(out_dir_tmp, 'snp.sorted'), os.path.join(out_dir_tmp, 'snp'))
 
-        # calculate distance to closest protein coding exons and extract intronic SNVs
+        # Calculate distance to closest protein coding exons and extract intronic SNVs
         self.logger.info('Calculating distance to closest protein coding exons.')
         protein_coding_exon_fname = os.path.join(self.db_dir, 'hg19_ensGene_exon.bed')
         closest_exon = ClosestExon(protein_coding_exon_fname)
         closest_exon.get_closest_exon(os.path.join(out_dir_tmp, 'snp.intronic'),
                                       os.path.join(out_dir_tmp, 'snp.distance'))
 
-        # extract flanking sequence
+        if os.path.getsize(os.path.join(out_dir_tmp, 'snp.distance')) <= 0:
+            self.logger.error('No input SNVs are in valid intronic regions.')
+            raise RuntimeError('No input SNVs are in valid intronic regions.')
+
+        # Extract flanking sequence
         self.logger.info('Fetching flanking sequence.')
-        ref_name = os.path.join(self.db_dir, 'hg19/hg19.fa')
         seq = FlankingSeq(ref_name, 20)
         seq.fetch_flanking_seq(os.path.join(out_dir_tmp, 'snp.distance'), os.path.join(out_dir_tmp, 'snp.seq'))
         seq.fetch_flanking_seq(os.path.join(out_dir_tmp, 'snp.distance'), os.path.join(out_dir_tmp, 'snp.fa'),
                                otype='fasta')
         seq.close()
 
-        # calculate RBP binding change
+        # Calculate RBP binding change
         self.logger.info('Calculating RBP binding change.')
         pssm_path = os.path.join(self.db_dir, 'motif/pwm')
         pssm_list_fname = os.path.join(self.db_dir, 'motif/pwm_valid.txt')
@@ -67,7 +76,7 @@ class FeatureCalculator(object):
                                     os.path.join(out_dir_tmp, 'snp.rbp_score'))
         rbp.cal_change(os.path.join(out_dir_tmp, 'snp.rbp_score'), os.path.join(out_dir_tmp, 'snp.rbp_change'))
 
-        # calculate protein structural features (disorder, secondary structure, ASA, Pfam, PTM)
+        # Calculate protein structural features (disorder, secondary structure, ASA, Pfam, PTM)
         self.logger.info('Extracting protein structural features.')
         db_fname = os.path.join(self.db_dir, 'ensembl.db')
         gene_pred_fname = os.path.join(self.db_dir, 'hg19_ensGene.txt')
@@ -75,7 +84,7 @@ class FeatureCalculator(object):
         protein_feature.calculate_protein_feature(os.path.join(out_dir_tmp, 'snp.distance'),
                                                   os.path.join(out_dir_tmp, 'snp.protein_feature'))
 
-        # calculate junction score
+        # Calculate junction score
         self.logger.info('Calculating junction strength change.')
         donor_ic_fname = os.path.join(self.db_dir, 'motif/donorsite.pssm')
         acceptor_ic_fname = os.path.join(self.db_dir, 'motif/acceptorsite.pssm')
@@ -83,7 +92,7 @@ class FeatureCalculator(object):
         junction_strength.cal_junction_strength(ref_name, os.path.join(out_dir_tmp, 'snp.distance'),
                                                 os.path.join(out_dir_tmp, 'snp.junc'))
 
-        # calculate phylop conservation score
+        # Calculate phylop conservation score
         self.logger.info('Calculating conservation score.')
         phylop_fname = os.path.join(self.db_dir, 'phylop/hg19.100way.phyloP100way.bw')
         phylop = Phylop(phylop_fname)
