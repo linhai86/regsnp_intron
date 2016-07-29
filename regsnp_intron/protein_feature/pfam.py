@@ -34,7 +34,8 @@ class Pfam(object):
                     query_result = self._merge_interval(query_result)
                     for start, end in query_result:
                         pfam += (min(pend, end) - max(pstart, start))
-                    assert pfam <= (pend - pstart + 1), '{0}, {1}, {2}, {3}\n'.format(transcript_id, pstart, pend, query_result)
+                    assert pfam <= (pend - pstart + 1), '{0}, {1}, {2}, {3}\n'.\
+                        format(transcript_id, pstart, pend, query_result)
                     pfam /= (pend - pstart + 1)
                 else:
                     pfam = 0.0
@@ -53,7 +54,7 @@ class Pfam(object):
             if b[0] > a[1]:
                 result.append(b)
             else:
-                result[-1][1]=max(a[1], b[1])
+                result[-1][1] = max(a[1], b[1])
         return result
 
 

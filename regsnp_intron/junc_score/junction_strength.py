@@ -23,7 +23,7 @@ class JunctionStrength(object):
     def cal_donor_ic(self, seq):
         assert len(seq) == self.donor_ic_matrix.shape[1]
         seq = seq.upper()
-        letter = {'G':0, 'A':1, 'C':2, 'T':3}
+        letter = {'G': 0, 'A': 1, 'C': 2, 'T': 3}
         score = 0
         for i, v in enumerate(seq):
             score += self.donor_ic_matrix[letter[v], i]
@@ -32,7 +32,7 @@ class JunctionStrength(object):
     def cal_acceptor_ic(self, seq):
         assert len(seq) == self.acceptor_ic_matrix.shape[1]
         seq = seq.upper()
-        letter = {'G':0, 'A':1, 'C':2, 'T':3}
+        letter = {'G': 0, 'A': 1, 'C': 2, 'T': 3}
         score = 0
         for i, v in enumerate(seq):
             score += self.acceptor_ic_matrix[letter[v], i]
@@ -45,7 +45,7 @@ class JunctionStrength(object):
             for line in bed_f:
                 cols = line.rstrip().split('\t')
                 chrom_snp, start_snp, end_snp, ref_snp, alt_snp, feature, gene_id,\
-                chrom, start, end, transcript_id, score, strand, distance = cols
+                    chrom, start, end, transcript_id, score, strand, distance = cols
                 start_snp, end_snp, start, end, distance = map(int, [start_snp, end_snp, start, end, distance])
                 if strand == '+':
                     astart = start - 13  # acceptor: 3' end of intron

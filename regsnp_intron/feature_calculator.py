@@ -25,7 +25,7 @@ class FeatureCalculator(object):
         self.out_dir = os.path.expanduser(out_dir)
         self.logger = logging.getLogger(__name__)
     
-    def calculate_feature(self, force=False):
+    def calculate_feature(self):
         out_dir_tmp = os.path.join(self.out_dir, 'tmp')
         os.mkdir(out_dir_tmp)
 

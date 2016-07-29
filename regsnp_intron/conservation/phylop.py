@@ -17,8 +17,9 @@ class Phylop(object):
     def get(self, chrom, start, end, flanking=0):
         """
         :param chrom: chr1, chr2, etc.
-        :param start: 0-based
-        :param end: 1-based
+        :param start: 0-based.
+        :param end: 1-based.
+        :param flanking: length of flanking sequence on each side.
         """
         return np.nanmean(self.bw.get_as_array(chrom, start - flanking, end + flanking))
 

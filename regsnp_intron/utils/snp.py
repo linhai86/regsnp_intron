@@ -43,7 +43,6 @@ class SNP(object):
                     return False
                 if ref_allele not in alleles or alt_allele not in alleles:
                     self.logger.error('Ref and alt should be in {{A, C, G, T}}: {0}'.format(line.rstrip()))
-                    #self.logger.error('Ref and alt should be in {A, C, G, T}: {0}.'.format(line.rstrip()))
                     return False
                 try:
                     pos = int(pos)
