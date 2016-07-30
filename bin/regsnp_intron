@@ -55,7 +55,7 @@ def main():
                               os.path.join(db_dir, 'model', 'on_ss_clf.pkl'),
                               os.path.join(db_dir, 'model', 'off_ss_clf.pkl'))
         predictor.predict(os.path.join(args.out_dir, 'snp.features.txt'),
-                          os.path.join(args.out_dir, 'snp.prediction.txt'))
+                          os.path.join(args.out_dir, 'snp.prediction'))
     except RuntimeError:
         shutil.rmtree(out_dir, ignore_errors=True)
 
