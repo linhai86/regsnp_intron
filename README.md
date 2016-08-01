@@ -1,7 +1,7 @@
-#regsnp-intron
+# regsnp-intron
 regsnp-intron predicts the disease-causing probability of intronic single nucleotide variants (iSNVs) based on both genomic and protein structural features.
 
-##Prerequisites
+## Prerequisites
 **ANNOVAR (>= 2016Feb01):**
 Follow the instructions at <http://annovar.openbioinformatics.org/en/latest> to install, and prepare Ensembl gene annotation.
 ```bash
@@ -25,7 +25,7 @@ The following Python libraries are also required. They will be automatically ins
 * bx-python (0.7.3),
 * pybedtools (>= 0.7.6)
 
-##Installation
+## Installation
 1. The easiest way is to install with pip (recommended). This will also install all the required Python libraries: 
 ```bash
 pip install regsnp-intron
@@ -37,7 +37,7 @@ cd regsnp_intron
 python setup.py install
 ```
 
-##Configuration
+## Configuration
 1. Download the database and annotation files for human genome (hg19):
 ```bash
 wget to_be_added
@@ -52,7 +52,7 @@ unzip db.zip
 }
 ```
 
-##Usage
+## Usage
 ```bash
 usage: regsnp_intron [-h] [-s SFNAME] [-f] ifname out_dir
 
@@ -73,7 +73,7 @@ optional arguments:
 
 ```
 
-##Output
+## Output
 The following files will be generated under the output directory:
 
 * snp.prediction.txt: tab-delimited text file containing prediction results and all the features for iSNVs.
@@ -95,7 +95,7 @@ features: The rest of columns contain all the genomic and protein structural fea
 .
 ```
 
-##Citation
+## Citation
 Please cite:
 ```
 To be added
