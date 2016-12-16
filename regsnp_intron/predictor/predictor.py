@@ -108,7 +108,6 @@ class Predictor(object):
         disease_category = ['D', 'PD', 'B']
         disease = np.digitize(fpr, cutoff)
         disease = [disease_category[i - 1] for i in disease]
-        print(disease)
         return fpr, tpr, disease
 
 
