@@ -53,7 +53,9 @@ def main():
         predictor = Predictor(os.path.join(db_dir, 'model', 'on_ss_imp.pkl'),
                               os.path.join(db_dir, 'model', 'off_ss_imp.pkl'),
                               os.path.join(db_dir, 'model', 'on_ss_clf.pkl'),
-                              os.path.join(db_dir, 'model', 'off_ss_clf.pkl'))
+                              os.path.join(db_dir, 'model', 'off_ss_clf.pkl'),
+                              os.path.join(db_dir, 'model', 'on_ss_fpr_tpr.txt'),
+                              os.path.join(db_dir, 'model', 'off_ss_fpr_tpr.txt'))
         predictor.predict(os.path.join(args.out_dir, 'snp.features.txt'),
                           os.path.join(args.out_dir, 'snp.prediction'))
     except RuntimeError:
