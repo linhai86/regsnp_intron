@@ -7,6 +7,7 @@ import os.path
 
 import pandas as pd
 
+from utils.vcf import VCF
 from utils.seq import FlankingSeq
 from utils.snp import SNP
 from utils.annovar import Annovar
@@ -18,16 +19,24 @@ from conservation.phylop import Phylop
 
 
 class FeatureCalculator(object):
-    def __init__(self, settings, ifname, out_dir):
+    def __init__(self, settings, ifname, out_dir, iformat='txt'):
         self.settings = settings
         self.db_dir = os.path.expanduser(settings['db_dir'])
         self.ifname = os.path.expanduser(ifname)
         self.out_dir = os.path.expanduser(out_dir)
+        self.iformat = iformat  # input format: txt or vcf
         self.logger = logging.getLogger(__name__)
     
     def calculate_feature(self):
         out_dir_tmp = os.path.join(self.out_dir, 'tmp')
         os.mkdir(out_dir_tmp)
+
+        # Convert input vcf to txt
+        if self.iformat == 'vcf':
+            vcf_input = VCF(self.ifname)
+            txt_input = os.path.join(out_dir_tmp, 'snp_input.txt')
+            vcf_input.convert_to_txt(txt_input)
+            self.ifname = txt_input
 
         # Check input format
         self.logger.info('Checking input file format.')
