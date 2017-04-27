@@ -67,7 +67,10 @@ class RBP(object):
             pssm = self.pssm
 
         for i, v in enumerate(seq):
-            current_score = pssm[letters[v], i]
+            if v in letters:
+                current_score = pssm[letters[v], i]
+            else:
+                current_score = 0.0  # 'N'
             score += current_score
 
         return score

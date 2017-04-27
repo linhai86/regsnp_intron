@@ -49,12 +49,16 @@ class FeatureCalculator(object):
         self.logger.info('Sorting input file.')
         snp.sort(os.path.join(out_dir_tmp, 'snp.sorted'))
 
+        # Switch alleles
+        self.logger.info('Switching alleles.')
+        snp.switch_alleles(os.path.join(out_dir_tmp, 'snp.sorted'), ref_name, os.path.join(out_dir_tmp, 'snp.switched'))
+
         # Annotate SNVs
         self.logger.info('Annotating SNVs with ANNOVAR.')
         annovar_path = os.path.expanduser(self.settings['annovar_path'])
         annovar_db_path = os.path.expanduser(self.settings['annovar_db_path'])
         annovar = Annovar(annovar_path, annovar_db_path)
-        annovar.annotate(os.path.join(out_dir_tmp, 'snp.sorted'), os.path.join(out_dir_tmp, 'snp'))
+        annovar.annotate(os.path.join(out_dir_tmp, 'snp.switched'), os.path.join(out_dir_tmp, 'snp'))
 
         # Calculate distance to closest protein coding exons and extract intronic SNVs
         self.logger.info('Calculating distance to closest protein coding exons.')
